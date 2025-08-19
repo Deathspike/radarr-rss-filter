@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "./jsconfig.config.check.json",
+    "./jsconfig.config.lang.json",
+    "./jsconfig.config.src.json"
+  ],
+  "include": ["src"]
+}
