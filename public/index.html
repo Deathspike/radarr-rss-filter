@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link href="css/site.css" rel="stylesheet" />
+    <title>radarr-rss-filter</title>
+  </head>
+  <body>
+    <div class="card">
+      <form action="/rss" method="GET">
+        <label>
+          RSS URL *
+          <input name="url" required type="url" />
+        </label>
+        <div class="row">
+          <label>
+            Required (CSV)
+            <input name="required" type="text" />
+          </label>
+          <label>
+            Forbidden (CSV)
+            <input name="forbidden" type="text" />
+          </label>
+        </div>
+        <button type="submit">Filter</button>
+      </form>
+    </div>
+  </body>
+</html>
