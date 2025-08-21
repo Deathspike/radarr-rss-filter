@@ -26,7 +26,7 @@ export class Filter {
   /** @param {any} values */
   #filter(values) {
     for (let index = 0; index < values.length; index++) {
-      if (this.#isValid(values[index])) {
+      if (!this.#isValid(values[index])) {
         values.splice(index, 1);
         index--;
       }
