@@ -3,6 +3,9 @@
   "name": "radarr-rss-filter",
   "private": true,
   "type": "module",
+  "dependencies": {
+    "fast-xml-parser": "5.2.5"
+  },
   "devDependencies": {
     "@types/node": "24.2.1",
     "prettier": "3.6.2",

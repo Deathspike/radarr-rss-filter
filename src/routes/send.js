@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
-import { getPathFromRoot } from "./util/getPathFromRoot.js";
+import { getPathFromRoot } from "../utils/getPathFromRoot.js";
 
 /**
  * @param {URL} requestUrl
@@ -24,13 +24,8 @@ export function send(requestUrl, res) {
       res.end();
     }
   } catch (err) {
-    if (err instanceof URIError) {
-      res.writeHead(404);
-      res.end();
-    } else {
-      res.writeHead(500);
-      res.end();
-    }
+    res.writeHead(404);
+    res.end();
   }
 }
 

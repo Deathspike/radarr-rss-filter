@@ -1,6 +1,6 @@
 import http from "node:http";
-import { parseAsync } from "./parse.js";
-import { send } from "./send.js";
+import { parseAsync } from "./routes/parse.js";
+import { send } from "./routes/send.js";
 
 /**
  * @param {URL} requestUrl
