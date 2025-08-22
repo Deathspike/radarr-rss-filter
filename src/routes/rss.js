@@ -5,7 +5,7 @@ import { Filter } from "../Filter.js";
  * @param {URL} requestUrl
  * @param {http.ServerResponse} res
  */
-export async function parseAsync(requestUrl, res) {
+export async function rssAsync(requestUrl, res) {
   const forbidden = requestUrl.searchParams.get("forbidden") ?? "";
   const required = requestUrl.searchParams.get("required") ?? "";
   const url = requestUrl.searchParams.get("url") ?? "";

@@ -1,5 +1,5 @@
 import http from "node:http";
-import { parseAsync } from "./routes/parse.js";
+import { rssAsync } from "./routes/rss.js";
 import { send } from "./routes/send.js";
 
 /**
@@ -8,7 +8,7 @@ import { send } from "./routes/send.js";
  */
 async function routeAsync(requestUrl, res) {
   if (/^\/rss$/.test(requestUrl.pathname)) {
-    await parseAsync(requestUrl, res);
+    await rssAsync(requestUrl, res);
   } else {
     send(requestUrl, res);
   }
