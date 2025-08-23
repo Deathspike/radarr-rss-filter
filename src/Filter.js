@@ -19,16 +19,18 @@ export class Filter {
   for(value) {
     const options = { ignoreAttributes: false };
     const xml = new XMLParser(options).parse(value);
-    this.#filter(xml.rss.channel.item);
+    this.#filter(xml?.rss?.channel?.item);
     return new XMLBuilder(options).build(xml);
   }
 
   /** @param {any} values */
   #filter(values) {
-    for (let index = 0; index < values.length; index++) {
-      if (!this.#isValid(values[index])) {
-        values.splice(index, 1);
-        index--;
+    if (Array.isArray(values)) {
+      for (let index = 0; index < values.length; index++) {
+        if (!this.#isValid(values[index])) {
+          values.splice(index, 1);
+          index--;
+        }
       }
     }
   }
