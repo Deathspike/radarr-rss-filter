@@ -4,4 +4,4 @@ COPY package.json package-lock.json ./
 COPY public/ public/
 COPY src/ src/
 RUN npm ci --production
-CMD ["node", "."]
+CMD ["node", "bin/cli.js"]

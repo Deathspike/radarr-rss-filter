@@ -2,6 +2,16 @@ import http from "node:http";
 import { rssAsync } from "./routes/rss.js";
 import { send } from "./routes/send.js";
 
+export async function mainAsync(port = 8283) {
+  await new Promise((resolve, reject) =>
+    http
+      .createServer(serveAsync)
+      .on("close", resolve)
+      .on("error", reject)
+      .listen(port, () => console.log(`Running on http://localhost:${port}/`)),
+  );
+}
+
 /**
  * @param {URL} requestUrl
  * @param {http.ServerResponse} res
@@ -30,7 +40,3 @@ async function serveAsync(req, res) {
     res.end();
   }
 }
-
-http.createServer(serveAsync).listen(8283, () => {
-  console.log("Listening on http://localhost:8283/");
-});
