@@ -1,7 +1,7 @@
 {
   "main": "src",
   "name": "radarr-rss-filter",
-  "private": true,
+  "repository": "https://github.com/Deathspike/radarr-rss-filter",
   "type": "module",
   "bin": {
     "radarr-rss-filter": "bin/cli.js"
