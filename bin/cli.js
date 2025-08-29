@@ -17,7 +17,7 @@ function getArg(name) {
     } else if (arg === `--${name}` && process.argv[i + 1]) {
       return process.argv[i + 1];
     } else if (arg.startsWith(`--${name}=`)) {
-      return arg.substring(name.length + 3);
+      return arg.slice(name.length + 3);
     }
   }
   return undefined;
