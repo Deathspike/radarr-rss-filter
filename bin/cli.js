@@ -3,8 +3,8 @@ import process from "node:process";
 import { mainAsync } from "../src/index.js";
 
 (async function () {
-  const portArg = getArg("port");
-  const port = portArg ? parseInt(portArg, 10) : undefined;
+  const portArg = getArg("port") ?? process.env["PORT"];
+  const port = portArg ? parseInt(portArg, 10) || 0 : undefined;
   await mainAsync(port);
 })();
 

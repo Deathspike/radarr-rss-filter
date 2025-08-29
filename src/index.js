@@ -1,15 +1,18 @@
 import http from "node:http";
+import { getServerPort } from "./utils/getServerPort.js";
 import { rssAsync } from "./routes/rss.js";
 import { send } from "./routes/send.js";
 
 export async function mainAsync(port = 8283) {
-  await new Promise((resolve, reject) =>
-    http
+  await new Promise((resolve, reject) => {
+    const server = http
       .createServer(serveAsync)
       .on("close", resolve)
-      .on("error", reject)
-      .listen(port, () => console.log(`Running on http://localhost:${port}/`)),
-  );
+      .on("error", reject);
+    server.listen(port, () =>
+      console.log(`Running on http://localhost:${getServerPort(server)}/`),
+    );
+  });
 }
 
 /**
