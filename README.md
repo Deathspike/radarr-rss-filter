@@ -2,6 +2,20 @@
 
 A lightweight proxy that filters RSS feed items using **required** and **forbidden** words, built for tools like [Radarr](https://github.com/Radarr/Radarr). Include only items that contain a required word, exclude items that contain forbidden words, or combine both to turn noisy feeds into something clean and useful, all while staying simple and lightweight.
 
+## Quick Start
+
+Run with **docker**:
+
+```bash
+docker run -p 8283:8283 deathspike/radarr-rss-filter
+```
+
+Or with **npm**:
+
+```bash
+npx radarr-rss-filter
+```
+
 ## Installation
 
 ### Docker
@@ -16,7 +30,7 @@ services:
       - 8283:8283
 ```
 
-If you use the filter in _Radarr_, remember to add `radarr.rss.filter` to `depends_on`:
+Remember to add `radarr.rss.filter` to `depends_on` for the dependent service:
 
 ```yaml
 services:
@@ -25,13 +39,30 @@ services:
       - radarr.rss.filter
 ```
 
-### Node.js
+### NPM
+
+```bash
+npm install -g radarr-rss-filter
+```
+
+Run with:
+
+```bash
+radarr-rss-filter
+```
+
+### Source
 
 ```bash
 git clone https://github.com/Deathspike/radarr-rss-filter
 cd radarr-rss-filter
 npm install --omit=dev
-node .
+```
+
+Run with:
+
+```bash
+node bin/cli.js
 ```
 
 ## Configuration
