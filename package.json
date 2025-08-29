@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "radarr-rss-filter": "./bin/cli.js"
+    "radarr-rss-filter": "bin/cli.js"
   },
   "dependencies": {
     "fast-xml-parser": "5.2.5"
