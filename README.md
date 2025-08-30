@@ -1,6 +1,6 @@
 # radarr-rss-filter
 
-A lightweight proxy that filters RSS feed items using **required** and **forbidden** words, built for tools like [Radarr](https://github.com/Radarr/Radarr). Include only items that contain a required word, exclude items that contain forbidden words, or combine both to turn noisy feeds into something clean and useful, all while staying simple and lightweight.
+A lightweight proxy that filters RSS feed items using **required** and **forbidden** words, built for tools like [Radarr](https://github.com/Radarr/Radarr). RSS feeds can get noisy, mixing in plenty of items you don't want. With this tool, you simply open the web form, enter an RSS URL, and add comma-separated required and forbidden words. The feed is then filtered so only the items you care about remain. You can then copy the clean URL from your browser's address bar to use directly in Radarr or any other tool that supports RSS.
 
 ## Quick Start
 
@@ -10,7 +10,7 @@ Run with **docker**:
 docker run -p 8283:8283 deathspike/radarr-rss-filter
 ```
 
-Or with **npm**:
+Or run with **npm (using npx)**:
 
 ```bash
 npx radarr-rss-filter
@@ -18,7 +18,9 @@ npx radarr-rss-filter
 
 ## Installation
 
-### Docker
+The _Quick Start_ commands are for one-off runs to quickly try the tool, while the options below are intended for regular use. You can set up a persistent environment with **Docker Compose**, install the CLI globally with **npm**, or clone from source if you want full control or plan to contribute.
+
+### Docker Compose
 
 ```yaml
 services:
@@ -30,7 +32,7 @@ services:
       - 8283:8283
 ```
 
-Remember to add `radarr.rss.filter` to `depends_on` for the dependent service:
+Remember to add `radarr.rss.filter` to `depends_on` for the dependent service, like Radarr:
 
 ```yaml
 services:
@@ -39,27 +41,31 @@ services:
       - radarr.rss.filter
 ```
 
-### NPM
+### npm
+
+Install globally with **npm**:
 
 ```bash
 npm install -g radarr-rss-filter
 ```
 
-Run with:
+Then run:
 
 ```bash
 radarr-rss-filter
 ```
 
-### Source
+### From Source
+
+Install from source with **git** and **npm**:
 
 ```bash
 git clone https://github.com/Deathspike/radarr-rss-filter
 cd radarr-rss-filter
-npm install --omit=dev
+npm install
 ```
 
-Run with:
+Then run with **node**:
 
 ```bash
 node bin/cli.js
@@ -67,7 +73,11 @@ node bin/cli.js
 
 ## Configuration
 
-To configure _radarr-rss-filter_, open the web form and enter an **RSS URL** (required), along with optional comma-separated lists of **required words** (items must include these) and **forbidden words** (items containing these will be excluded). When you click **Filter**, the feed loads with your filters applied, and you can then copy the resulting URL from the browser's address bar to use in tools like _Radarr_.
+You can configure this tool either with CLI options or with environment variables. CLI options are typically used when running from the command line, while environment variables are more convenient in Docker. If you provide both, CLI options take precedence. If neither is set, the tool falls back to the default values shown in the table below.
+
+| CLI          | ENV        | Default | Description                                                                                                                        |
+| ------------ | ---------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **`--port`** | **`PORT`** | `8283`  | The port the **embedded HTTP server** listens on. Change this if the default port is already in use or you prefer a different one. |
 
 ## Examples
 
