@@ -4,10 +4,10 @@ import http from "node:http";
 export function getServerPort(server) {
   const address = server.address();
   if (typeof address == "string") {
-    throw new Error("Invalid address (pipe or domain socket)");
-  } else if (!address) {
-    throw new Error("Invalid address (not listening)");
-  } else {
+    throw new TypeError("Invalid address (pipe or domain socket)");
+  } else if (address) {
     return address.port;
+  } else {
+    throw new Error("Invalid address (not listening)");
   }
 }

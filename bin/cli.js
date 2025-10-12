@@ -1,24 +1,23 @@
 #!/usr/bin/env node
 import process from "node:process";
+
 import { mainAsync } from "../src/index.js";
 
-(async function () {
-  const portArg = getArg("port") ?? process.env["PORT"];
-  const port = portArg ? parseInt(portArg, 10) || 0 : undefined;
-  await mainAsync(port);
-})();
-
 /** @param {string} name */
-function getArg(name) {
-  for (let i = 2; i < process.argv.length; i++) {
-    const arg = process.argv[i];
-    if (!arg) {
+function getArgument(name) {
+  for (let index = 2; index < process.argv.length; index++) {
+    const argument = process.argv[index];
+    if (!argument) {
       continue;
-    } else if (arg === `--${name}` && process.argv[i + 1]) {
-      return process.argv[i + 1];
-    } else if (arg.startsWith(`--${name}=`)) {
-      return arg.slice(name.length + 3);
+    } else if (argument === `--${name}` && process.argv[index + 1]) {
+      return process.argv[index + 1];
+    } else if (argument.startsWith(`--${name}=`)) {
+      return argument.slice(name.length + 3);
     }
   }
-  return undefined;
+  return;
 }
+
+const portArgument = getArgument("port") ?? process.env["PORT"];
+const port = portArgument ? Number.parseInt(portArgument) || 0 : undefined;
+await mainAsync(port);

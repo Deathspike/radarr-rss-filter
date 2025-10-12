@@ -1,32 +1,32 @@
 import http from "node:http";
+
 import { Filter } from "../Filter.js";
 
 /**
  * @param {URL} requestUrl
- * @param {http.ServerResponse} res
+ * @param {http.ServerResponse} response
  */
-export async function rssAsync(requestUrl, res) {
+export async function rssAsync(requestUrl, response) {
   const forbidden = requestUrl.searchParams.get("forbidden") ?? "";
   const required = requestUrl.searchParams.get("required") ?? "";
   const url = requestUrl.searchParams.get("url") ?? "";
   if (url) {
-    const response = await fetch(url);
-    const contentType = response.headers.get("content-type") ?? "";
-    if (!response.ok) {
-      res.writeHead(response.status);
-      res.end();
-    } else if (!isRss(contentType)) {
-      res.writeHead(415);
-      res.end();
+    const result = await fetch(url);
+    const contentType = result.headers.get("content-type") ?? "";
+    if (!result.ok) {
+      response.writeHead(result.status);
+      response.end();
+    } else if (isRss(contentType)) {
+      const rss = new Filter(forbidden, required).for(await result.text());
+      response.writeHead(200, { "content-type": "application/xml" });
+      response.end(rss);
     } else {
-      const result = await response.text();
-      const filter = new Filter(forbidden, required);
-      res.writeHead(200, { "content-type": "application/xml" });
-      res.end(filter.for(result));
+      response.writeHead(415);
+      response.end();
     }
   } else {
-    res.writeHead(400);
-    res.end();
+    response.writeHead(400);
+    response.end();
   }
 }
 

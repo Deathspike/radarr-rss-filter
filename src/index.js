@@ -1,12 +1,13 @@
 import http from "node:http";
-import { getServerPort } from "./utils/getServerPort.js";
+
 import { rssAsync } from "./routes/rss.js";
 import { send } from "./routes/send.js";
+import { getServerPort } from "./utils/getServerPort.js";
 
 export async function mainAsync(port = 8283) {
   await new Promise((resolve, reject) => {
     const server = http
-      .createServer(serveAsync)
+      .createServer((request, response) => void serveAsync(request, response))
       .on("close", resolve)
       .on("error", reject);
     server.listen(port, () =>
@@ -17,29 +18,29 @@ export async function mainAsync(port = 8283) {
 
 /**
  * @param {URL} requestUrl
- * @param {http.ServerResponse} res
+ * @param {http.ServerResponse} response
  */
-async function routeAsync(requestUrl, res) {
+async function routeAsync(requestUrl, response) {
   if (/^\/rss$/.test(requestUrl.pathname)) {
-    await rssAsync(requestUrl, res);
+    await rssAsync(requestUrl, response);
   } else {
-    send(requestUrl, res);
+    send(requestUrl, response);
   }
 }
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
+ * @param {http.IncomingMessage} request
+ * @param {http.ServerResponse} response
  */
-async function serveAsync(req, res) {
+async function serveAsync(request, response) {
   try {
-    if (!req.url) return;
+    if (!request.url) return;
     const baseUrl = "http://localhost/";
-    const requestUrl = new URL(req.url, baseUrl);
-    await routeAsync(requestUrl, res);
-  } catch (err) {
-    console.error(err);
-    res.writeHead(500);
-    res.end();
+    const requestUrl = new URL(request.url, baseUrl);
+    await routeAsync(requestUrl, response);
+  } catch (error) {
+    console.error(error);
+    response.writeHead(500);
+    response.end();
   }
 }

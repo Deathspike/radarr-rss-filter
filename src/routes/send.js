@@ -1,13 +1,14 @@
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
+
 import { getPathFromRoot } from "../utils/getPathFromRoot.js";
 
 /**
  * @param {URL} requestUrl
- * @param {http.ServerResponse} res
+ * @param {http.ServerResponse} response
  */
-export function send(requestUrl, res) {
+export function send(requestUrl, response) {
   try {
     const relativeUrl = decodeURIComponent(requestUrl.pathname);
     const rootPath = getPathFromRoot("public") + path.sep;
@@ -15,17 +16,17 @@ export function send(requestUrl, res) {
     if (file.startsWith(rootPath)) {
       const streamPath = file.endsWith(path.sep) ? file + "index.html" : file;
       const stream = fs.createReadStream(streamPath);
-      stream.on("data", onChunk.bind(undefined, res, streamPath));
-      stream.on("end", onChunk.bind(undefined, res, streamPath));
-      stream.on("error", onError.bind(undefined, res));
-      stream.pipe(res);
+      stream.on("data", onChunk.bind(undefined, response, streamPath));
+      stream.on("end", onChunk.bind(undefined, response, streamPath));
+      stream.on("error", onError.bind(undefined, response));
+      stream.pipe(response);
     } else {
-      res.writeHead(404);
-      res.end();
+      response.writeHead(404);
+      response.end();
     }
-  } catch (err) {
-    res.writeHead(404);
-    res.end();
+  } catch {
+    response.writeHead(404);
+    response.end();
   }
 }
 
@@ -42,21 +43,21 @@ function getContentType(streamPath) {
 }
 
 /**
- * @param {http.ServerResponse} res
+ * @param {http.ServerResponse} response
  * @param {string} streamPath
  */
-function onChunk(res, streamPath) {
-  if (!res.headersSent) {
-    res.writeHead(200, {
+function onChunk(response, streamPath) {
+  if (!response.headersSent) {
+    response.writeHead(200, {
       "cache-control": "no-cache",
       "content-type": getContentType(streamPath),
     });
   }
 }
 
-/** @param {http.ServerResponse} res */
-function onError(res) {
-  if (!res.headersSent) {
-    res.writeHead(404);
+/** @param {http.ServerResponse} response */
+function onError(response) {
+  if (!response.headersSent) {
+    response.writeHead(404);
   }
 }

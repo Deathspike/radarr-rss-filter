@@ -55,10 +55,9 @@ export class Filter {
   /** @param {any} value */
   #isValid(value) {
     return (
-      (!this.#required.length ||
+      (this.#required.length === 0 ||
         this.#required.some((search) => this.#includes(value, search))) &&
-      (!this.#forbidden.length ||
-        this.#forbidden.every((search) => !this.#includes(value, search)))
+      this.#forbidden.every((search) => !this.#includes(value, search))
     );
   }
 }
