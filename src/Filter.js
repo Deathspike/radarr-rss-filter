@@ -1,9 +1,9 @@
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 
 export class Filter {
-  /** @type {string[]} */
+  /** @readonly @type {string[]} */
   #forbidden;
-  /** @type {string[]} */
+  /** @readonly @type {string[]} */
   #required;
 
   /**
