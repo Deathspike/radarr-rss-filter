@@ -10,9 +10,10 @@ export async function mainAsync(port = 8283) {
       .createServer((request, response) => void serveAsync(request, response))
       .on("close", resolve)
       .on("error", reject);
-    server.listen(port, () =>
-      console.log(`Running on http://localhost:${getServerPort(server)}/`),
-    );
+    server.listen(port, () => {
+      const serverPort = getServerPort(server);
+      console.log(`Running on http://localhost:${serverPort.toString()}/`);
+    });
   });
 }
 
