@@ -1,8 +1,8 @@
 FROM node:24-alpine
 WORKDIR /app
-COPY bin/ bin/
 COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY bin/docker.js bin/docker.js
 COPY public/ public/
 COPY src/ src/
-RUN npm ci --production
-CMD ["node", "bin/cli.js"]
+CMD ["node", "bin/docker.js"]

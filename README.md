@@ -73,9 +73,9 @@ node bin/cli.js
 
 ## Configuration
 
-You can configure this tool either with CLI options or with environment variables. CLI options are typically used when running from the command line, while environment variables are more convenient in Docker. If you provide both, CLI options take precedence. If neither is set, the tool falls back to the default values shown in the table below.
+You can configure this tool either with a CLI option when running through npm or from source, or with an environment variable when running in Docker. If no value is provided, the tool falls back to the default value shown in the table below.
 
-| CLI          | ENV        | Default | Description                                                                                                                        |
+| CLI          | Docker     | Default | Description                                                                                                                        |
 | ------------ | ---------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | **`--port`** | **`PORT`** | `8283`  | The port the **embedded HTTP server** listens on. Change this if the default port is already in use or you prefer a different one. |
 
