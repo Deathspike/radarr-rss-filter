@@ -7,7 +7,7 @@ import { getServerPort } from "./utils/getServerPort.js";
 export async function mainAsync(port = 8283) {
   await new Promise((resolve, reject) => {
     const server = http
-      .createServer((request, response) => void serveAsync(request, response))
+      .createServer((req, res) => void serveAsync(req, res))
       .on("close", resolve)
       .on("error", reject);
     server.listen(port, () => {
