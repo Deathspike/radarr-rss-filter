@@ -5,4 +5,5 @@ RUN npm ci --omit=dev
 COPY bin/docker.js bin/docker.js
 COPY public/ public/
 COPY src/ src/
+USER node
 CMD ["node", "bin/docker.js"]
