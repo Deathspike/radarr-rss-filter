@@ -15,18 +15,15 @@ export async function rssAsync(requestUrl, response) {
     const contentType = result.headers.get("content-type") ?? "";
     if (!result.ok) {
       response.writeHead(result.status);
-      response.end();
     } else if (isRss(contentType)) {
       const rss = new Filter(forbidden, required).for(await result.text());
       response.writeHead(200, { "content-type": "application/xml" });
-      response.end(rss);
+      response.write(rss);
     } else {
       response.writeHead(415);
-      response.end();
     }
   } else {
     response.writeHead(400);
-    response.end();
   }
 }
 

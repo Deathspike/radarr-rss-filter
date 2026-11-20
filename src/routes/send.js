@@ -8,25 +8,25 @@ import { getPathFromRoot } from "../utils/getPathFromRoot.js";
  * @param {URL} requestUrl
  * @param {http.ServerResponse} response
  */
-export function send(requestUrl, response) {
+export async function sendAsync(requestUrl, response) {
   try {
     const relativeUrl = decodeURIComponent(requestUrl.pathname);
     const rootPath = getPathFromRoot("public") + path.sep;
     const file = path.join(rootPath, relativeUrl);
     if (file.startsWith(rootPath)) {
-      const streamPath = file.endsWith(path.sep) ? file + "index.html" : file;
-      const stream = fs.createReadStream(streamPath);
-      stream.on("data", onChunk.bind(undefined, response, streamPath));
-      stream.on("end", onChunk.bind(undefined, response, streamPath));
-      stream.on("error", onError.bind(undefined, response));
-      stream.pipe(response);
+      await new Promise((resolve) => {
+        const streamPath = file.endsWith(path.sep) ? file + "index.html" : file;
+        const stream = fs.createReadStream(streamPath);
+        stream.on("data", onChunk.bind(undefined, response, streamPath));
+        stream.on("end", onEnd.bind(undefined, resolve, response, streamPath));
+        stream.on("error", onError.bind(undefined, resolve, response));
+        stream.pipe(response, { end: false });
+      });
     } else {
       response.writeHead(404);
-      response.end();
     }
   } catch {
     response.writeHead(404);
-    response.end();
   }
 }
 
@@ -55,9 +55,30 @@ function onChunk(response, streamPath) {
   }
 }
 
-/** @param {http.ServerResponse} response */
-function onError(response) {
+/**
+ * @param {(value: any) => void} resolve
+ * @param {http.ServerResponse} response
+ * @param {string} streamPath
+ */
+function onEnd(resolve, response, streamPath) {
   if (!response.headersSent) {
-    response.writeHead(404);
+    response.writeHead(200, {
+      "cache-control": "no-cache",
+      "content-type": getContentType(streamPath),
+    });
   }
+  resolve(void 0);
+}
+
+/**
+ * @param {(value: any) => void} resolve
+ * @param {http.ServerResponse} response
+ */
+function onError(resolve, response) {
+  if (!response.headersSent) {
+    response.writeHead(404, {
+      "cache-control": "no-cache",
+    });
+  }
+  resolve(void 0);
 }
